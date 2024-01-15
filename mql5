@@ -1,0 +1,83 @@
+mql5
+//+------------------------------------------------------------------+
+//|                                                BotAGI MT4        |
+//|                                     https://www.forexroboteasy.com  |
+//|                                                  Forex Robot Easy Team |
+//+------------------------------------------------------------------+
+//| This code implements the necessary trade functions and features  |
+//| for the Neuro FX EA product, an automated forex trading tool,    |
+//| for use in the MT4 platform.                                     |
+//|                                                                  |
+//| The code allows traders to automate their trading activities,    |
+//| identify profitable trading opportunities, and integrate the     |
+//| bonus EA offer.                                                   |
+//+------------------------------------------------------------------+
+
+// Define input parameters
+input double StopLoss = 50.0; // Stop loss in pips
+input double TakeProfit = 100.0; // Take profit in pips
+
+// Define trade function
+void Trade(double lotSize, double price)
+{
+    // Calculate stop loss and take profit levels
+    double sl = NormalizeDouble(price - StopLoss * Point, Digits);
+    double tp = NormalizeDouble(price + TakeProfit * Point, Digits);
+    
+    // Open a position
+    int ticket = OrderSend(Symbol(), OP_BUY, lotSize, price, 0, sl, tp, 'BotAGI MT4', 0, 0, Green);
+    
+    // Check if the order was opened successfully
+    if (ticket > 0)
+    {
+        Print('Buy order opened at price ', price);
+    }
+    else
+    {
+        Print('Error opening buy order: ', GetLastError());
+    }
+}
+
+// Define trade opportunity identification algorithm
+bool IdentifyTradeOpportunity(double price)
+{
+    // Add your algorithm logic here to identify profitable trading opportunities
+    // You can use technical indicators, market trends, price movements, etc.
+    // Return true if a trade opportunity is identified, otherwise return false
+    return true;
+}
+
+// Define function to integrate bonus EA offer
+void IntegrateBonusEA()
+{
+    // Add your code here to integrate the bonus EA offer
+    // This can include accessing additional trading strategies and tools
+}
+
+// Define OnInit function
+void OnInit()
+{
+    // Initialize the necessary components and settings for the EA
+    // This function is called once when the EA is attached to a chart
+}
+
+// Define OnTick function
+void OnTick()
+{
+    // Check for trade opportunities
+    if (IdentifyTradeOpportunity(SymbolInfoDouble(Symbol(), MODE_BID)))
+    {
+        // Generate a random lot size between 0.01 and 0.1
+        double lotSize = MathRand() % 10 / 100.0 + 0.01;
+        
+        // Open a buy trade at the current market price
+        Trade(lotSize, SymbolInfoDouble(Symbol(), MODE_BID));
+    }
+}
+
+// Define OnDeinit function
+void OnDeinit(const int reason)
+{
+    // Clean up any resources or perform any necessary actions before the EA is removed from the chart
+}
+
